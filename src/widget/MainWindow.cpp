@@ -26,17 +26,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectItems);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    // 界面大小
     ui->Vsplitter->setSizes(QList<int>({700,300}));
     ui->Hsplitter->setSizes(QList<int>({200,600,200}));
 
-    // 设置表头的列宽，全部自适应
+    // 表头相关
     ui->treeWidget->header()->setSectionResizeMode(0,QHeaderView::ResizeToContents);
     ui->treeWidget->header()->setSectionResizeMode(1,QHeaderView::ResizeToContents);
 
-    // 开启自定义右键策略
+    // 自定义右键策略
     ui->treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    // 图
+    // 图相关
     ui->customPlot->legend->setVisible(true);
     ui->customPlot->legend->setBrush(QBrush(QColor(255,255,255,150)));
     ui->customPlot->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom|QCP::iSelectPlottables);
@@ -210,14 +211,12 @@ void MainWindow::highlightTableParam(QModelIndex& Index) {
         return;
     
     int columnIndex = Index.column();
-    
-    // 获取表头文本（参数名）
+
     QString paramName = tableModel->headerData(columnIndex, Qt::Horizontal).toString().trimmed();
     
     if (paramName.isEmpty() || currentCSVFileName.isEmpty())
         return;
-    
-    // 根据当前显示的文件名，在树中找到对应的 CSV 文件项
+
     QTreeWidgetItem* csvItem = nullptr;
     QList<QTreeWidgetItem*> allItems = ui->treeWidget->findItems(
         QFileInfo(currentCSVFileName).fileName(), 
@@ -236,8 +235,7 @@ void MainWindow::highlightTableParam(QModelIndex& Index) {
     
     if (csvItem == nullptr)
         return;
-    
-    // 在该 CSV 文件下查找匹配的参数项
+
     for (int i = 0; i < csvItem->childCount(); i++) {
         QTreeWidgetItem* child = csvItem->child(i);
         if (child->type() == MainWindow::itParamItem && 
@@ -252,7 +250,6 @@ void MainWindow::highlightTableParam(QModelIndex& Index) {
                     graph->setSelection(QCPDataSelection(graph->data()->dataRange()));
                     curGraph = graph;
 
-                    // 3. 置顶
                     if (!ui->customPlot->layer("top_layer")) {
                         ui->customPlot->addLayer("top_layer", ui->customPlot->layer("main"), QCustomPlot::limAbove);
                     }
@@ -261,7 +258,6 @@ void MainWindow::highlightTableParam(QModelIndex& Index) {
                     }
                     graph->setLayer("top_layer");
 
-                    // 4. 同步更新右侧的属性面板 (一定要拦截信号防止修改死循环)
                     ui->editName->blockSignals(true);
                     ui->spinWidth->blockSignals(true);
                     ui->spinAlpha->blockSignals(true);
@@ -274,11 +270,9 @@ void MainWindow::highlightTableParam(QModelIndex& Index) {
                     ui->spinAlpha->setValue(graph->pen().color().alpha() * 100 / 255);
                     ui->spinScatterSize->setValue(graph->scatterStyle().size());
 
-                    // 线型同步
                     if (graph->pen().style() == Qt::SolidLine) ui->comboStyle->setCurrentIndex(0);
                     else if (graph->pen().style() == Qt::DashLine) ui->comboStyle->setCurrentIndex(1);
 
-                    // 散点同步
                     switch(graph->scatterStyle().shape()) {
                         case QCPScatterStyle::ssNone:     ui->comboScatter->setCurrentIndex(0); break;
                         case QCPScatterStyle::ssCircle:   ui->comboScatter->setCurrentIndex(1); break;
@@ -449,11 +443,9 @@ void MainWindow::actionOpen() {
     if (!fileName.isEmpty()) {
         QTreeWidgetItem* parItem,*item;
         item = ui->treeWidget->currentItem();
-        
-        // 禁止在CSVItem和ParamItem下添加CSV文件，自动找到合适的父节点
+
         if (item != nullptr) {
             if (item->type() == MainWindow::itCSVItem || item->type() == MainWindow::itParamItem) {
-                // 如果选中的是CSV文件或参数项，则使用其顶层父节点
                 while (item->parent() != nullptr && item->type() != MainWindow::itTopItem) {
                     item = item->parent();
                 }
@@ -776,9 +768,8 @@ void MainWindow::autoRescalePlot() {
     if (ui->customPlot->graphCount() == 0) {
         ui->customPlot->xAxis->setRange(0, 1);
         ui->customPlot->yAxis->setRange(0, 1);
-        ui->customPlot->replot(); // 把残影刷掉
+        ui->customPlot->replot();
 
-        // 顺便把右侧的属性面板和统计信息也清空
         ui->editName->clear();
         ui->labelMaxValue->setText("--");
         ui->labelMinValue->setText("--");
@@ -938,34 +929,26 @@ void MainWindow::onComboLegendChanged(int index) {
 }
 
 void MainWindow::updateGlobalFont() {
-    // 1. 获取当前 UI 面板上的字体参数
     QFont baseFont = ui->comboFont->currentFont();
     int fontSize = ui->spinFontSize->value();
     bool isBold = ui->checkFontBold->isChecked();
 
-    // 2. 轴标签字体 (用来画 X/Y 轴旁边的文字，比如 "Epoch" 或 "mAP")
     QFont labelFont = baseFont;
     labelFont.setPointSize(fontSize);
     labelFont.setBold(isBold);
 
-    // 3. 刻度/图例字体 (用来画 0, 20, 40 和图例文字)
-    // 论文排版标准：刻度数字比轴标题小 2 号，且通常不加粗
     QFont secondaryFont = baseFont;
     secondaryFont.setPointSize(qMax(6, fontSize - 2)); // qMax 防止字号减成负数或太小看不清
     secondaryFont.setBold(false);
 
-    // 4. 应用到 X 轴
     ui->customPlot->xAxis->setLabelFont(labelFont);
     ui->customPlot->xAxis->setTickLabelFont(secondaryFont);
 
-    // 5. 应用到 Y 轴
     ui->customPlot->yAxis->setLabelFont(labelFont);
     ui->customPlot->yAxis->setTickLabelFont(secondaryFont);
 
-    // 6. 应用到图例
     ui->customPlot->legend->setFont(secondaryFont);
 
-    // 7. 刷新画面
     ui->customPlot->replot();
 }
 
@@ -973,18 +956,15 @@ void MainWindow::onComboGridChanged(int index) {
     QPen gridPen(QColor(220, 220, 220), 1, Qt::DashLine);
 
     if (index == 0) {
-        // 0: 水平虚线 (论文标准) - 关闭 X 轴网格，开启 Y 轴网格
         ui->customPlot->xAxis->grid()->setVisible(false);
         ui->customPlot->yAxis->grid()->setVisible(true);
         ui->customPlot->yAxis->grid()->setPen(gridPen);
     } else if (index == 1) {
-        // 1: 全网格 - 同时开启 X 和 Y 轴网格
         ui->customPlot->xAxis->grid()->setVisible(true);
         ui->customPlot->yAxis->grid()->setVisible(true);
         ui->customPlot->xAxis->grid()->setPen(gridPen);
         ui->customPlot->yAxis->grid()->setPen(gridPen);
     } else if (index == 2) {
-        // 2: 无网格 - 极简模式
         ui->customPlot->xAxis->grid()->setVisible(false);
         ui->customPlot->yAxis->grid()->setVisible(false);
     }

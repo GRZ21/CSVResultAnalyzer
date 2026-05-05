@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>780</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>CSV Result Analyzer</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QSplitter" name="Hsplitter">
+      <property name="orientation">
+       <enum>Qt::Orientation::Horizontal</enum>
+      </property>
+      <widget class="QTreeWidget" name="treeWidget">
+       <property name="headerHidden">
+        <bool>false</bool>
+       </property>
+       <column>
+        <property name="text">
+         <string>数据管理</string>
+        </property>
+       </column>
+      </widget>
+      <widget class="QSplitter" name="Vsplitter">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+       <widget class="QCustomPlot" name="customPlot" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+       <widget class="QTableView" name="tableView"/>
+      </widget>
+      <widget class="QWidget" name="rightPanelWidget" native="true">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QGroupBox" name="groupCurveProps">
+          <property name="title">
+           <string>选中曲线属性</string>
+          </property>
+          <layout class="QVBoxLayout" name="curvePropsLayout">
+           <item>
+            <layout class="QFormLayout" name="formLayout">
+             <item row="0" column="0">
+              <widget class="QLabel" name="labelName">
+               <property name="text">
+                <string>名称:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="editName"/>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="labelColor">
+               <property name="text">
+                <string>颜色:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QPushButton" name="btnColor">
+               <property name="text">
+                <string>选择</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="labelAlpha">
+               <property name="text">
+                <string>透明度(%):</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QSpinBox" name="spinAlpha">
+               <property name="maximum">
+                <number>100</number>
+               </property>
+               <property name="value">
+                <number>100</number>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="labelWidth">
+               <property name="text">
+                <string>线宽:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QSpinBox" name="spinWidth">
+               <property name="minimum">
+                <number>1</number>
+               </property>
+               <property name="maximum">
+                <number>10</number>
+               </property>
+               <property name="value">
+                <number>2</number>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="labelStyle">
+               <property name="text">
+                <string>线型:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QComboBox" name="comboStyle">
+               <item>
+                <property name="text">
+                 <string>实线</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>虚线</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="labelScatter">
+               <property name="text">
+                <string>散点样式:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QComboBox" name="comboScatter">
+               <item>
+                <property name="text">
+                 <string>无 (默认)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>圆圈 (Circle)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>方块 (Square)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>菱形 (Diamond)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>三角形 (Triangle)</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="labelScatterSize">
+               <property name="text">
+                <string>散点大小:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QSpinBox" name="spinScatterSize">
+               <property name="minimum">
+                <number>1</number>
+               </property>
+               <property name="maximum">
+                <number>20</number>
+               </property>
+               <property name="value">
+                <number>5</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="layerLayout">
+             <item>
+              <widget class="QLabel" name="labelLayer">
+               <property name="text">
+                <string>图层顺序:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnBringTop">
+               <property name="text">
+                <string>⬆ 置顶</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnSendBottom">
+               <property name="text">
+                <string>⬇ 置底</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="checkSmooth">
+             <property name="text">
+              <string>启用平滑 (EMA)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="smoothLayout">
+             <item>
+              <widget class="QLabel" name="labelSmoothValue">
+               <property name="text">
+                <string>平滑度:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSlider" name="sliderSmooth">
+               <property name="maximum">
+                <number>99</number>
+               </property>
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupStats">
+             <property name="title">
+              <string>统计信息</string>
+             </property>
+             <layout class="QGridLayout" name="statsLayout">
+              <item row="0" column="0">
+               <widget class="QLabel" name="labelMaxTitle">
+                <property name="text">
+                 <string>最大值:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="labelMaxValue">
+                <property name="text">
+                 <string>--</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="labelMinTitle">
+                <property name="text">
+                 <string>最小值:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLabel" name="labelMinValue">
+                <property name="text">
+                 <string>--</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="labelFinalTitle">
+                <property name="text">
+                 <string>最终值:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLabel" name="labelFinalValue">
+                <property name="text">
+                 <string>--</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupGlobalSettings">
+          <property name="title">
+           <string>图表全局设置</string>
+          </property>
+          <layout class="QVBoxLayout" name="globalLayout">
+           <item>
+            <layout class="QFormLayout" name="globalFormLayout">
+             <item row="0" column="0">
+              <widget class="QLabel" name="labelGrid">
+               <property name="text">
+                <string>背景网格:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QComboBox" name="comboGrid">
+               <item>
+                <property name="text">
+                 <string>水平虚线 (论文标准)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>全网格</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>无网格</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="labelLegend">
+               <property name="text">
+                <string>图例位置:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QComboBox" name="comboLegend">
+               <property name="currentText">
+                <string>右上角</string>
+               </property>
+               <item>
+                <property name="text">
+                 <string>右上角</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>右下角</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>隐藏图例</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="labelFont">
+               <property name="text">
+                <string>全局字体:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QFontComboBox" name="comboFont">
+               <property name="currentFont">
+                <font>
+                 <family>Arial</family>
+                </font>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="labelFontSize">
+               <property name="text">
+                <string>字号与样式:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <layout class="QHBoxLayout" name="fontStyleLayout">
+               <item>
+                <widget class="QSpinBox" name="spinFontSize">
+                 <property name="minimum">
+                  <number>6</number>
+                 </property>
+                 <property name="maximum">
+                  <number>36</number>
+                 </property>
+                 <property name="value">
+                  <number>12</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="checkFontBold">
+                 <property name="text">
+                  <string>加粗</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="labelXTitle">
+               <property name="text">
+                <string>X轴标题:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLineEdit" name="editXTitle">
+               <property name="text">
+                <string>Epoch</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="labelYTitle">
+               <property name="text">
+                <string>Y轴标题:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QLineEdit" name="editYTitle">
+               <property name="text">
+                <string>Value</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="labelExportRatio">
+               <property name="text">
+                <string>导出比例:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QComboBox" name="comboExportRatio">
+               <item>
+                <property name="text">
+                 <string>0: 保持当前窗口比例</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>1: 论文单栏排版 (4:3)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>2: 论文双栏跨版 (2:1)</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnResetZoom">
+             <property name="text">
+              <string>恢复默认视图 (重置缩放)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnExportImg">
+             <property name="text">
+              <string>导出论文插图</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Orientation::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>63</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1200</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_F">
+    <property name="title">
+     <string>文件(&amp;F)</string>
+    </property>
+    <addaction name="actionOpen"/>
+    <addaction name="actionOpenDir"/>
+    <addaction name="actionExport"/>
+    <addaction name="action_Q"/>
+   </widget>
+   <widget class="QMenu" name="menu_V">
+    <property name="title">
+     <string>编辑(E)</string>
+    </property>
+    <addaction name="action_Clear_Plot"/>
+    <addaction name="action_Remove_All_Files"/>
+    <addaction name="action_Delete_CSV"/>
+   </widget>
+   <widget class="QMenu" name="menu_V_2">
+    <property name="title">
+     <string>视图(&amp;V)</string>
+    </property>
+    <addaction name="action_Toggle_File_Tree"/>
+    <addaction name="action_Toggle_Data_Table"/>
+    <addaction name="action_Toggle_Properties"/>
+   </widget>
+   <widget class="QMenu" name="menu_H">
+    <property name="title">
+     <string>帮助(&amp;H)</string>
+    </property>
+    <addaction name="action_Documentation"/>
+    <addaction name="action_About"/>
+   </widget>
+   <addaction name="menu_F"/>
+   <addaction name="menu_V"/>
+   <addaction name="menu_V_2"/>
+   <addaction name="menu_H"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionOpen">
+   <property name="text">
+    <string>打开(O)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionOpenDir">
+   <property name="text">
+    <string>打开文件夹(Import Directory)</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="text">
+    <string>导出(S)</string>
+   </property>
+  </action>
+  <action name="action_Q">
+   <property name="text">
+    <string>退出(Q)</string>
+   </property>
+  </action>
+  <action name="action_Clear_Plot">
+   <property name="text">
+    <string>清空画布 (Clear Plot)</string>
+   </property>
+  </action>
+  <action name="action_Remove_All_Files">
+   <property name="text">
+    <string>移除所有文件 (Remove All Files)</string>
+   </property>
+  </action>
+  <action name="action_Toggle_File_Tree">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>显示/隐藏 文件树 (Toggle File Tree)</string>
+   </property>
+  </action>
+  <action name="action_Toggle_Data_Table">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>显示/隐藏 数据表  (Toggle Data Table)</string>
+   </property>
+  </action>
+  <action name="action_Toggle_Properties">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>显示/隐藏 属性面板 (Toggle Properties)</string>
+   </property>
+  </action>
+  <action name="action_Documentation">
+   <property name="text">
+    <string>使用说明 (Documentation)</string>
+   </property>
+  </action>
+  <action name="action_About">
+   <property name="text">
+    <string>关于 (About)</string>
+   </property>
+  </action>
+  <action name="action_Delete_CSV">
+   <property name="text">
+    <string>删除(Delete CSV)</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

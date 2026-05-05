@@ -1,5 +1,5 @@
 //
-// Created by GRZ on 2026/5/2.
+// Created by GRZ.
 //
 
 // You may need to build the project (run Qt uic code generator) to get "ui_MainWindow.h" resolved
@@ -254,7 +254,7 @@ void MainWindow::highlightTableParam(QModelIndex& Index) {
                         ui->customPlot->addLayer("top_layer", ui->customPlot->layer("main"), QCustomPlot::limAbove);
                     }
                     if (graph->layer()->name() == "top_layer") {
-                        graph->setLayer("main"); // 踢出重进机制
+                        graph->setLayer("main");
                     }
                     graph->setLayer("top_layer");
 
@@ -289,10 +289,9 @@ void MainWindow::highlightTableParam(QModelIndex& Index) {
                     ui->comboScatter->blockSignals(false);
                     ui->spinScatterSize->blockSignals(false);
 
-                    // 5. 更新右下角的统计信息 (最高值、最终值等)
                     updateCurveStats(graph);
 
-                    break; // 找到了就结束循环
+                    break;
                 }
             }
             ui->customPlot->replot();

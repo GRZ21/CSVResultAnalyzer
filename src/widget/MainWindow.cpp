@@ -638,7 +638,7 @@ void MainWindow::onActionToggleProps(bool checked) {
 }
 
 void MainWindow::onActionGuide() {
-    QDesktopServices::openUrl(QUrl("https://github.com/GRZ-Y/CSVReader"));
+    QDesktopServices::openUrl(QUrl("https://github.com/GRZ21/CSVResultAnalyzer"));
 }
 
 void MainWindow::onActionAbout() {
@@ -646,7 +646,7 @@ void MainWindow::onActionAbout() {
                 "<p><b>开发者：</b>GRZ</p>"
                 "<p><b>联系邮箱：</b>grzgrzgrz21@foxmail.com</p>"
                 "<p><b>版本：</b>v1.0</p>"
-                "<p>本软件专为深度学习（如 YOLO 系列）训练日志可视化设计。</p>"
+                "<p>本软件专为深度学习（如YOLO和RT-DETR系列）训练日志可视化设计。</p>"
                 "<hr>"
                 "<p>基于 Qt(C++) 构建。</p>"
                 "<p><b>开源协议：</b>本项目遵循 <a href='https://opensource.org/licenses/MIT'>MIT License</a>。</p>"
